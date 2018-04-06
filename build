@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ ! -d ./data ]
+then
+  mkdir data
+fi
+if [ -f ./data/stage4-disk.img ]
+then
+  echo ./data/stage4-disk.img present
+else
+  if [ -f ./data/stage4-disk.img.xz ]
+  then
+    xz -d ./data/stage4-disk.img.xz
+  else
+    cd data
+    wget https://fedorapeople.org/groups/risc-v/disk-images/stage4-disk.img.xz
+    cd ..
+    xz -d ./data/stage4-disk.img.xz
+  fi
+fi
+
+docker build -t riscv docker
